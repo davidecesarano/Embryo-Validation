@@ -1,0 +1,30 @@
+{
+    "name": "davidecesarano/embryo-validation",
+    "type": "library",
+    "description": "PHP validation for PSR-7 request.",
+    "keywords": [
+        "php",
+        "psr-7",
+        "validation"
+    ],
+    "homepage": "https://github.com/davidecesarano/embryo-validation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Davide Cesarano",
+            "homepage": "https://github.com/davidecesarano"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "davidecesarano/embryo-http": "dev-master",
+        "davidecesarano/embryo-emitter": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Embryo\\": "Embryo/"
+        }
+    }
+}
