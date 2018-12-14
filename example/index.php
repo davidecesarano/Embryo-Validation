@@ -2,13 +2,10 @@
     
     require __DIR__.'/../vendor/autoload.php';
     
-    use Embryo\Http\Emitter\Emitter;
     use Embryo\Http\Factory\ServerRequestFactory;
-    use Embryo\Http\Factory\ResponseFactory;
     use Embryo\Validation\Validation;
 
     $request    = (new ServerRequestFactory)->createServerRequestFromServer();
-    $response   = (new ResponseFactory)->createResponse(200);
     $validation = new Validation($request);
 
 ?>
