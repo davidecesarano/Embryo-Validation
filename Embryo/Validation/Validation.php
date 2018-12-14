@@ -2,6 +2,9 @@
 
     /**
      * Validation
+     * 
+     * @author Davide Cesarano <davide.cesarano@unipegaso.it>
+     * @link   https://github.com/davidecesarano/embryo-validation  
      */
 
     namespace Embryo\Validation;
@@ -75,12 +78,12 @@
          *
          * @param string $name
          * @return self
-         * @throws InvalidArgumentException
+         * @throws InvalidFieldTypeException
          */
         public function type(string $type): self
         {
             if (!method_exists($this, $type)) {
-                throw new \InvalidFieldTypeException("The field type must be email, file, array, datetime, number, int, float, url, boolean or any");
+                throw new InvalidFieldTypeException("The field type must be text, email, file, array, datetime, number, int, float, url, boolean or any");
             }
 
             $this->value = $this->get($this->name);
@@ -132,6 +135,49 @@
         }
 
         /**
+         * Check if field value matchs regular expression.
+         *
+         * @param string $regex
+         * @return self
+         */
+        public function pattern(string $regex): self
+        {
+            $pattern = '/^('.$regex.')$/u';
+            if(!preg_match($pattern, $this->value)){
+                $this->error('pattern', [$this->name, $regex]);
+            }
+            return $this;
+        }
+
+        /**
+         * Check if field value matches the value.
+         *
+         * @param mixed $value
+         * @return self
+         */
+        public function equal($value): self
+        {
+            if ($this->value != $value){
+                $this->error('equal', [$this->name, $value]);
+            }
+            return $this;
+        }
+
+        /**
+         * Check if field value matches the values.
+         *
+         * @param mixed $value
+         * @return self
+         */
+        public function match(...$match)
+        {
+            if (!in_array($this->value, $match)) {
+                $this->error('match', [$this->name, implode(', ', $match)]);
+            }
+            return $this;
+        }
+
+        /**
          * Set field length.
          *
          * @param int $min
@@ -159,24 +205,11 @@
         }
 
         /**
-         * Set default value.
-         *
-         * @param mixed $value
-         * @return self
-         */
-        public function equal($value): self
-        {
-            if ($this->value != $value){
-                $this->error('equal', [$this->name, $value]);
-            }
-            return $this;
-        }
-
-        /**
          * Set max size of the file.
          *
          * @param int $size
          * @return self
+         * @throws InvalidFieldException
          */
         public function maxSize(int $size): self
         {
@@ -206,25 +239,32 @@
                 $base      = log($size, 1024);
                 $suffixes  = ['', 'Kb', 'Mb', 'Gb', 'Tb'];   
                 $megabytes = round(pow(1024, $base - floor($base)), 2) .' '. $suffixes[floor($base)];
-
                 $this->error('maxSize', [$this->name, $megabytes]);
 
             }
             return $this;
         }
 
-        public function accept(string $ext)
+        /**
+         * Set accepted extension for files.
+         *
+         * @param string|array $ext
+         * @return self
+         * @throws InvalidFieldException
+         * @throws InvalidFieldTypeException
+         */
+        public function accept(...$ext): self
         {
             $accept = false;
             if (!is_array($this->value) && !$this->value instanceof UploadedFileInterface) {
-                throw new InvalidFieldException('accept method can be used only for file');
+                throw new InvalidFieldException('Accept method can be used only for files');
             }
 
             // file[]
             if (is_array($this->value)) {
                 foreach ($this->value as $file) {
                     if ($file instanceof UploadedFileInterface && $file->getError() !== 4) {
-                        if ($file->getClientMediaType() !== $ext) {
+                        if (!in_array($file->getClientMediaType(), $ext)) {
                             $accept = true;
                         }
                     }
@@ -232,51 +272,18 @@
             }
 
             // file
-            if (($this->value instanceof UploadedFileInterface) && ($this->value->getError() !== 4) && ($this->value->getClientMediaType() !== $ext)) {
+            if (
+                $this->value instanceof UploadedFileInterface && 
+                $this->value->getError() !== 4 && 
+                !in_array($this->value->getClientMediaType(), $ext)
+            ) {
                 $accept = true;
             }
 
             if ($accept) {
-                $this->error('accept', [$this->name, $ext]);
+                $this->error('accept', [$this->name, implode(', ', $ext)]);
             }
             return $this;
-        }
-
-        /**
-         * Validation result.
-         * 
-         * Return an array with status (200 or 400), sanitized data,
-         * errors and error list.
-         *
-         * @return array
-         */
-        public function result(): array
-        {
-            $status = (empty($this->errors)) ? 200 : 400;
-            
-            $errorList = [];
-            foreach ($this->errors as $error) {
-                foreach ($error as $message) {
-                    $errorList[] = $message;
-                }
-            }
-
-            return [
-                'status'    => $status,
-                'data'      => $this->data,
-                'errors'    => $this->errors,
-                'errorList' => $errorList
-            ];
-        }
-
-        /**
-         * Return true if validation is success.
-         * 
-         * @return bool
-         */
-        public function isSuccess(): bool
-        {
-            return empty($this->errors);
         }
 
         /**
@@ -313,5 +320,34 @@
                 }
             }
             return $errorList;
+        }
+
+        /**
+         * Validation result.
+         * 
+         * Return an array with status (200 or 400), sanitized data,
+         * errors and error list.
+         *
+         * @return array
+         */
+        public function result(): array
+        {
+            return [
+                'status'    => (empty($this->errors)) ? 200 : 400,
+                'data'      => $this->getData(),
+                'errors'    => $this->getErrors(),
+                'errorList' => $this->getErrorList()
+            ];
+        }
+
+        /**
+         * Return true if validation is success,
+         * otherwise return false.
+         * 
+         * @return bool
+         */
+        public function isSuccess(): bool
+        {
+            return empty($this->errors);
         }
     }

@@ -2,6 +2,9 @@
 
     /**
      * FilterTrait
+     * 
+     * @author Davide Cesarano <davide.cesarano@unipegaso.it>
+     * @link   https://github.com/davidecesarano/embryo-validation  
      */
 
     namespace Embryo\Validation\Traits;
@@ -23,7 +26,7 @@
         }
 
         /**
-         * Check if file.
+         * Check if file instance of UploadedFileInterface.
          *
          * @param mixed $files
          * @return bool
@@ -33,6 +36,15 @@
             if (!is_array($files) && !$files instanceof UploadedFileInterface) {
                 return false;
             }
+
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    if (!$file instanceof UploadedFileInterface) {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 
@@ -116,6 +128,8 @@
 
         /**
          * Any.
+         * 
+         * Return always true.
          *
          * @param mixed $value
          * @return bool
@@ -126,7 +140,20 @@
         }
 
         /**
-         * Sanitize string.
+         * Text.
+         *
+         * Return always true.
+         * 
+         * @param mixed $value
+         * @return bool
+         */
+        protected function text($value): bool 
+        {
+            return true;
+        }
+
+        /**
+         * Sanitize string if field type is "text".
          *
          * @param string $type
          * @param mixed $value
