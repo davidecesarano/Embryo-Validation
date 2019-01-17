@@ -33,7 +33,7 @@ $validation = new Embryo\Validation\Validation($request);
 
 $validation->name('title')->type('text')->required();
 $validation->name('body')->type('any')->required();
-if ($validation->isSuccess) {
+if ($validation->isSuccess()) {
     // ...
 } else {
     print_r($validation->getErrors());
