@@ -57,6 +57,7 @@ Set field type. If value not match at type return an error. The types are:
 * **int**. Value must be an integer.
 * **float**. Value must be a float.
 * **url**. Value must be a url.
+* **slug**. Value must be a slug.
 * **boolean**. Value must be a boolean.
 * **any**. Value may be anything, without sanitization (this is useful for html code).
 
@@ -93,11 +94,11 @@ Return validation result. This method return an array like so:
         ],
         'errors' => [
             'name' => [
-                'The %s field is required.'
+                'The title field is required.'
             ]
         ],
         'errorList' => [
-            'The %s field is required.'
+            'The title field is required.'
         ]
     ];
 ```
