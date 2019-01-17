@@ -58,7 +58,7 @@
         }
 
         /**
-         * Set field name and check if it exists.
+         * Set field name.
          *
          * @param string $name
          * @return self
@@ -66,9 +66,6 @@
         public function name(string $name): self
         {
             $this->name = $name;
-            if (!$this->has($name)) {
-                $this->error('name', [$name]);
-            }
             return $this;
         }
 
@@ -146,6 +143,8 @@
             if(!preg_match($pattern, $this->value)){
                 $this->error('pattern', [$this->name, $regex]);
             }
+            
+            $this->data[$this->name] = $this->value;
             return $this;
         }
 
