@@ -139,7 +139,9 @@
          */
         public function pattern(string $regex): self
         {
-            $pattern = '/^('.$regex.')$/u';
+            $pattern     = '/^('.$regex.')$/u';
+            $this->value = $this->get($this->name);
+
             if(!preg_match($pattern, $this->value)){
                 $this->error('pattern', [$this->name, $regex]);
             }
