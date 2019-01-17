@@ -153,6 +153,17 @@
         }
 
         /**
+         * Check if is slug.
+         * 
+         * @param mixed $value
+         * @return bool
+         */
+        protected function slug($value): bool 
+        {
+            return preg_match('/^([\/\w\-]+)$/u', $value);
+        }
+
+        /**
          * Sanitize string if field type is "text".
          *
          * @param string $type

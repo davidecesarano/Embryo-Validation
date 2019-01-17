@@ -24,7 +24,8 @@
                 'match'    => 'The %s field must match to one of those value: %s.',
                 'length'   => 'The %s field may not be less than %s and greater than %s.',
                 'maxSize'  => 'The %s field may not be greater than %s.',
-                'accept'   => 'The %s field must be a %s.'
+                'accept'   => 'The %s field must be a %s.',
+                'slug'     => 'The %s field must be a slug.'
             ],
             'it' => [
                 'name'     => 'Il campo %s non esiste.',
@@ -35,7 +36,8 @@
                 'match'    => 'Il campo %s deve corrispondere a uno di questi valori: %s.',
                 'length'   => 'Il campo %s non può essere inferiore a %s e superiore a %s.',
                 'maxSize'  => 'Il campo %s non può essere superiore a %s.',
-                'accept'   => 'Il campo %s deve essere un %s.'
+                'accept'   => 'Il campo %s deve essere un %s.',
+                'slug'     => 'Il campo %s deve essere uno slug.'
             ]
         ];
 
