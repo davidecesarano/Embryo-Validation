@@ -44,7 +44,7 @@ If the validation rules pass, your code will keep executing normally; however, i
 ### Methods
 
 #### `name(string $name)`
-Set field name. If name not exists in `$request->getParsedBody()` or in `$request->getUploadedFiles()` return an error. 
+Set field name. If name not exists in `$request->getParsedBody()` or in `$request->getUploadedFiles()` return null. 
 
 #### `type(string $type)`
 Set field type. If value not match at type return an error. The types are:
@@ -94,11 +94,11 @@ Return validation result. This method return an array like so:
         ],
         'errors' => [
             'name' => [
-                'The title field is required.'
+                'The name field is required.'
             ]
         ],
         'errorList' => [
-            'The title field is required.'
+            'The name field is required.'
         ]
     ];
 ```
