@@ -90,7 +90,7 @@
          */
         protected function int($int)
         {
-            return filter_var($int, FILTER_VALIDATE_INT);
+            return filter_var($int, FILTER_VALIDATE_INT) === 0 || filter_var($int, FILTER_VALIDATE_INT);
         }
 
         /**
