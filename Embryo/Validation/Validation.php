@@ -288,13 +288,18 @@
         }
 
         /**
-         * Return data.
+         * Return validated array items
+         * or single item.
          *
-         * @return array
+         * @param string $param
+         * @return mixed
          */
-        public function getData(): array 
+        public function getData(string $param = null)
         {
-            return $this->data;
+            if (!$param) {
+                return $this->data;
+            }
+            return isset($this->data[$param]) ? $this->data[$param] : NULL;
         }
 
         /**
