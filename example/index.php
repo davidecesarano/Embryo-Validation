@@ -32,7 +32,7 @@
                             <input type="email" name="email" class="form-control" placeholder="name@example.com">
                         </div>
                         <div class="form-group">
-                            <label>Date (required)</label>
+                            <label>Date</label>
                             <input type="date" name="date" class="form-control">
                         </div>
                         <div class="form-group">
@@ -45,7 +45,7 @@
                     <?php 
                         $validation->name('name')->type('text')->required();
                         $validation->name('email')->type('email')->required();
-                        $validation->name('date')->type('datetime')->required();
+                        $validation->name('date')->type('datetime');
                         $validation->name('file')->type('file')->accept('image/png')->required();
 
                         if ($validation->isSuccess()) {
