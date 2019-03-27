@@ -84,8 +84,10 @@
             }
 
             $this->value = $this->get($this->name);
-            if (!$this->{$type}($this->value)) {
-                $this->error('type', [$this->name, $type]);
+            if (!empty($this->value)) {
+                if (!$this->{$type}($this->value)) {
+                    $this->error('type', [$this->name, $type]);
+                }
             }
 
             $this->data[$this->name] = $this->sanitize($type, $this->value);
