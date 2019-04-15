@@ -25,7 +25,7 @@ $ php -S localhost:8000
 
 ## Usage
 ### Writing simple validation logic
-Let's assume we have `POST` request. With PSR we have the `$_POST` parameters in `$request->getParsedBody()` and the `$_FILES` files in `$request->getUploadedFiles`. Use Embryo Validation for to validate parameters values.
+Let's assume we have `POST` request. With PSR we have the `$_POST` parameters in `$request->getParsedBody()` and the `$_FILES` files in `$request->getUploadedFiles()`. Use Embryo Validation for to validate parameters values.
 
 ```php
 $request = (new Embryo\Http\Factory\ServerRequestFactory)->createServerRequestFromServer();
@@ -82,7 +82,7 @@ Set field file max size. The size of the file must not be greater than `$size` i
 #### `accept(... $ext)`
 Set allowed extensions for file field. The extension must match at one of the values.
 
-#### `result()`
+#### `result(): array`
 Return validation result. This method return an array like so:
 ```php
     return [
@@ -104,14 +104,18 @@ Return validation result. This method return an array like so:
 ```
 If validation fails, status is `400`, otherwise is `200`.
 
-#### `isSuccess()`
+#### `isSuccess(): bool`
 Return `true` if validation pass, otherwise return `false`.
 
-#### `getErrors()`
+#### `getErrors(): array`
 Return errors multidimensional array where key is field name and value is an errors array.
 
-#### `getErrorList()`
+#### `getErrorList(): array`
 Return errors array.
 
-#### `getData()`
+#### `getData([string $key])`
 Return sanitized data array. If the value is an instance of `UploadedFileInterface`, you must use, for example, `$file->getClientFilename()` for returning file name.
+You may returning single item:
+```php
+    echo $validation->getData('title'); // Hello World!
+```
