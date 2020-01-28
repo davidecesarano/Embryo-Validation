@@ -101,7 +101,7 @@
          */
         protected function float($float)
         {
-            return filter_var($int, FILTER_VALIDATE_FLOAT);
+            return filter_var($float, FILTER_VALIDATE_FLOAT);
         }
 
         /**
